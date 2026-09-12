@@ -1,0 +1,31 @@
+name: Post video
+
+# Manual trigger only for now — flip on the schedule below once the real
+# posting APIs (YouTube/Instagram/TikTok) are wired up in post_video().
+on:
+  workflow_dispatch: {}
+  # schedule:
+  #   - cron: "0 15 * * *"  # once daily, 15:00 UTC
+
+jobs:
+  post-video:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run posting script
+        run: python3 post.py
+
+      - name: Commit moved file
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add to-postMH postedMH
+          git diff --cached --quiet || git commit -m "Move posted video [skip ci]"
+          git push
