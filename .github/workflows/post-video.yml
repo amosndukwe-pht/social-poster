@@ -1,8 +1,7 @@
 name: Post video
 
-# Runs once daily. Still only prints a placeholder "Would post ..." message —
-# real posting APIs (YouTube/Instagram/TikTok) aren't wired up in
-# post_video() yet.
+# Runs once daily. Uploads the oldest queued video to YouTube as a
+# private video, then moves it from to-postMH to postedMH.
 on:
   workflow_dispatch: {}
   schedule:
@@ -23,8 +22,20 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Write YouTube token
+        run: printf '%s' "$YOUTUBE_TOKEN_JSON" > token.json
+        env:
+          YOUTUBE_TOKEN_JSON: ${{ secrets.YOUTUBE_TOKEN_JSON }}
+
       - name: Run posting script
         run: python3 post.py
+
+      - name: Remove YouTube token
+        if: always()
+        run: rm -f token.json
 
       - name: Commit moved file
         run: |
