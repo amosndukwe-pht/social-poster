@@ -1,3 +1,10 @@
 .DS_Store
 __pycache__/
 *.pyc
+
+# Oversized videos (>100MB, exceed GitHub's push limit) - left local-only for now
+to-postMH/1 титры.mov
+to-postMH/2.mp4
+to-postMH/8 субтитры.mov
+postedMH/5 субтитры.mov
+postedMH/6.mp4
