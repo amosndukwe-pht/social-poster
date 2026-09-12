@@ -2,6 +2,10 @@
 __pycache__/
 *.pyc
 
+# Google OAuth client secret and resulting user token - never commit
+credentials.json
+token.json
+
 # Oversized videos (>100MB, exceed GitHub's push limit) - left local-only for now
 to-postMH/1 титры.mov
 to-postMH/2.mp4
